@@ -33,23 +33,26 @@ public class ConectorEscposAndroid {
     public ArrayList<OperacionPluginEscpos> operaciones;
     public String urlPlugin;
     public String serial;
+    public String mac;
 
 
-    public ConectorEscposAndroid(String urlPlugin, String serial) {
+    public ConectorEscposAndroid(String mac, String urlPlugin, String serial) {
         this.operaciones = new ArrayList<>();
+        this.mac = mac;
         this.urlPlugin = urlPlugin;
         this.serial = serial;
     }
 
-    public ConectorEscposAndroid(String urlPlugin) {
+    public ConectorEscposAndroid(String mac, String urlPlugin) {
         this.operaciones = new ArrayList<>();
+        this.mac = mac;
         this.urlPlugin = urlPlugin;
         this.serial = "";
     }
 
-    public ConectorEscposAndroid() {
-        this.urlPlugin = URL_PLUGIN_POR_DEFECTO;
+    public ConectorEscposAndroid(String mac) {
         this.operaciones = new ArrayList<>();
+        this.urlPlugin = URL_PLUGIN_POR_DEFECTO;
         this.serial = "";
     }
 
@@ -237,7 +240,7 @@ public class ConectorEscposAndroid {
     }
 
 
-    public JSONObject getJson(String macImpresora) throws Exception, IOException, InterruptedException {
+    public JSONObject toJson() throws Exception {
         JSONArray operacionesComoJson = new JSONArray();
         for (OperacionPluginEscpos op : this.operaciones) {
             JSONObject jsonObject = new JSONObject();
@@ -245,60 +248,10 @@ public class ConectorEscposAndroid {
             jsonObject.put("argumentos", new JSONArray(op.argumentos));
             operacionesComoJson.put(jsonObject);
         }
-
         JSONObject impresionConNombreComoJson = new JSONObject();
-        impresionConNombreComoJson.put("impresora", macImpresora);
+        impresionConNombreComoJson.put("impresora", this.mac);
         impresionConNombreComoJson.put("serial", this.serial);
         impresionConNombreComoJson.put("operaciones", operacionesComoJson);
         return impresionConNombreComoJson;
-    }
-
-    public boolean imprimirEn(String macImpresora, Context context) throws Exception, IOException, InterruptedException {
-        ImpresoraConOperaciones impresionConNombre = new ImpresoraConOperaciones(this.operaciones, macImpresora, this.serial);
-        String postEndpoint = this.urlPlugin + "/imprimir";
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://www.google.com";
-        JSONArray jsonArray = new JSONArray();
-        for (OperacionPluginEscpos op : this.operaciones) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put(op.nombre, op.argumentos);
-            jsonArray.put(jsonObject);
-        }
-        return false;
-
-        /*
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        textView.setText("Response is: " + response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                textView.setText("That didn't work!");
-            }
-        });
-
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
-        String respuesta = "a";
-        if (respuesta.equals("true\n")) {
-            return true;
-        } else {
-            throw new Exception("petición ok pero error en el servidor: " + respuesta);
-        }
-        */
-
-    }
-
-    public static String[] obtenerImpresoras(String urlPlugin) throws InterruptedException, IOException {
-        return new String[]{""};
-    }
-
-    public static String[] obtenerImpresoras() throws InterruptedException, IOException {
-        return obtenerImpresoras(URL_PLUGIN_POR_DEFECTO);
     }
 }

@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(view, "Escribe la MAC", Snackbar.LENGTH_LONG).show();
                     return;
                 }
-                ConectorEscposAndroid conectorEscposAndroid = new ConectorEscposAndroid(ConectorEscposAndroid.URL_PLUGIN_POR_DEFECTO, serial);
+                ConectorEscposAndroid conectorEscposAndroid = new ConectorEscposAndroid(mac, ConectorEscposAndroid.URL_PLUGIN_POR_DEFECTO, serial);
                 conectorEscposAndroid
                         .Iniciar()
                         .EscribirTexto(editTextMensaje.getText().toString())
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         .EscribirTexto("Proudly brought to you by Parzibyte\n");
                 String cuerpo = "";
                 try {
-                    cuerpo = conectorEscposAndroid.getJson(mac).toString();
+                    cuerpo = conectorEscposAndroid.toJson().toString();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
