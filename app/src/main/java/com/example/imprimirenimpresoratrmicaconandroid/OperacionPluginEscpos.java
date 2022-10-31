@@ -1,6 +1,5 @@
 package com.example.imprimirenimpresoratrmicaconandroid;
 
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 
