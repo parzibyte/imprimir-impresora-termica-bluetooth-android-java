@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
                         .Iniciar()
                         .EscribirTexto(editTextMensaje.getText().toString())
                         .Feed(1)
-                        .EscribirTexto("Proudly brought to you by Parzibyte\n");
+                        .EscribirTexto("Proudly brought to you by Parzibyte\n")
+                        .Feed(2);
                 String cuerpo = "";
                 try {
                     cuerpo = conectorEscposAndroid.toJson().toString();
